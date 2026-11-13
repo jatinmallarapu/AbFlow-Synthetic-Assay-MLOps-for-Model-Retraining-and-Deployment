@@ -23,11 +23,11 @@ def test_validator_rejects_extra_fields_and_duplicates():
 def test_pipeline_and_serving(monkeypatch):
     with connect() as conn:
         conn.execute("CREATE SCHEMA IF NOT EXISTS abflow_test")
-    from urllib.parse import parse_qsl, urlencode, urlsplit, urlunsplit
+    from urllib.parse import parse_qsl, quote, urlencode, urlsplit, urlunsplit
     parts = urlsplit(os.environ["DATABASE_URL"])
     query = dict(parse_qsl(parts.query))
     query["options"] = "-c search_path=abflow_test"
-    monkeypatch.setenv("DATABASE_URL", urlunsplit(parts._replace(query=urlencode(query))))
+    monkeypatch.setenv("DATABASE_URL", urlunsplit(parts._replace(query=urlencode(query, quote_via=quote))))
     with connect() as conn:
         conn.execute("DROP TABLE IF EXISTS models, observations, batches")
     client = TestClient(api)
