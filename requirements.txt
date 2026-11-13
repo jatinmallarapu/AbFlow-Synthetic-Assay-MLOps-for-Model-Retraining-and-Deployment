@@ -1,0 +1,6 @@
+fastapi==0.115.12
+pydantic==2.11.7
+numpy==2.2.6
+psycopg[binary]==3.2.9
+prefect==3.4.11
+uvicorn==0.34.3
